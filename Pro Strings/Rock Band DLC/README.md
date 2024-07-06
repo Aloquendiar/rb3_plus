@@ -31,6 +31,7 @@
 | I Can't Go For That (No Can Do) | Hall & Oates | G: E Standard<br>B: E Standard | same as in-game |
 | Wings of a Butterfly | HIM | G: Drop D<br>B: E Standard | G: Drop C<br> C Standard |
 | Run to the Hills (Original Version) | Iron Maiden | G: E Standard<br>B: E Standard | same as in-game |
+| Oh My Love | John Lennon | G: E Standard<br>B: E Standard | same as in-game |
 | Don't Stop Believing | Journey | G: E Standard<br>B: E Standard | same as in-game |
 | Mr. Brightside | The Killers | G: E Standard<br>B: E Standard | G: Eb Standard<br>B: Eb Standard |
 | Breaking the Habit | Linkin Park | G: E Standard<br>B: Drop D | same as in-game |
@@ -40,12 +41,14 @@
 | Darling Dear | Little Fish | G: E Standard<br>B: E Standard | same as in-game |
 | Party in the U.S.A. | Miley Cyrus | G: E Standard<br>B: E Standard | G: Eb Standard<br>B: Eb Standard |
 | Use It | The New Pornographers | G: E Standard<br>B: E Standard | same as in-game |
+| Last | Nine Inch Nails | G: Drop D<br>B: Drop D | same as in-game |
 | Hella Good | No Doubt | G: E Standard<br>B: E Standard | same as in-game |
 | Tragic Kingdom | No Doubt | G: E Standard<br>B: E Standard | same as in-game |
 | Wonderwall | Oasis | G: E Standard<br>B: E Standard | G: F# Standard (E Standard, capo on 2nd fret)<br>B: same as in-game |
 | crushcrushcrush | Paramore | G: Drop D<br>B: Drop D | G: Eb Drop Db<br>B: Eb Drop Db |
 | Heartbreaker | Pat Benatar | G: E Standard<br>B: E Standard | same as in-game |
 | Hit Me With Your Best Shot | Pat Benatar | G: E Standard<br>B: E Standard | same as in-game |
+| Here Comes Your Man | Pixies | G: E Standard<br>B: E Standard | same as in-game |
 | Natural Disaster | Plain White T's | G: Drop D<br>B: Drop D | same as in-game |
 | Don't Stop Me Now | Queen | G: E Standard<br>B: E Standard | same as in-game |
 | Apache Rose Peacock | Red Hot Chili Peppers | G: E Standard<br>B: E Standard | same as in-game |
@@ -72,6 +75,8 @@
 | B.Y.O.B. | System of a Down | G: Drop D<br>B: Drop D | G: Eb Drop Db<br>B: Eb Drop Db |
 | Toxicity | System of a Down | G: Drop D<br>B: Drop D | G: D Drop C<br>B: D Drop C |
 | Head Over Heels | Tears for Fears | G: E Standard<br>B: E Standard | same as in-game |
+| Buddy Holly | Weezer | G: E Standard<br>B: E Standard | G: Eb Standard<br>B: Eb Standard |
+| El Scorcho | Weezer | G: E Standard<br>B: E Standard | G: Eb Standard<br>B: Eb Standard |
 | Pork and Beans | Weezer | G: E Standard<br>B: E Standard | G: Eb Standard<br>B: Eb Standard |
 | Seven Nation Army | The White Stripes | G: E Standard<br>B: E Standard | same as in-game |
 | She's Not There | The Zombies | G: E Standard<br>B: E Standard | same as in-game |
