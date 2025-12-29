@@ -3,6 +3,16 @@ name: CI
 on: [push]
 
 jobs:
+  Keyboard_Upgrade_Integrity:
+   steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Verify if the MIDI files contain the requirements
+        run: |
+          python dependencies/midi_test.py
   build_xbox_pro_strings_con:
     runs-on: ubuntu-latest
     steps:
