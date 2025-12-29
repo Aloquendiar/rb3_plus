@@ -45,14 +45,15 @@ def analyze_midi_batch(root_folder):
                 files_checked += 1
                 full_path = os.path.join(root, filename)
                 base_name = os.path.splitext(filename)[0]
-                milo_path = os.path.join(root, base_name + ".milo_xbox")
-                milo_name = [base_name + ".milo"]
+                # milo_path = os.path.join(root, base_name + ".milo_xbox")
                 if base_name.lower().endswith("_plus"):
                     clean_name = base_name[:-5] # remove _plus
-                    milo_name.append(clean_name + ".milo")
-                
+                    milo_name = (clean_name + ".milo_xbox")
+                skip_venue_check = False
+
                 # If .milo exists, we SKIP the venue check
-                skip_venue_check = os.path.exists(milo_path)
+                if os.path.exists(os.path.join(root, milo_name)):
+                    skip_venue_check
                 errors = []
 
                 try:
