@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   Keyboard_Upgrade_Integrity:
+   runs-on: ubuntu-latest
    steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
