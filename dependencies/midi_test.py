@@ -44,6 +44,11 @@ def analyze_midi_batch(root_folder):
             if filename.lower().endswith(('.mid')):
                 files_checked += 1
                 full_path = os.path.join(root, filename)
+                base_name = os.path.splitext(filename)[0]
+                milo_path = os.path.join(root, base_name + ".milo")
+                
+                # If .milo exists, we SKIP the venue check
+                skip_venue_check = os.path.exists(milo_path)
                 errors = []
 
                 try:
@@ -61,7 +66,7 @@ def analyze_midi_batch(root_folder):
                             track_counts[t_name] = track_counts.get(t_name, 0) + 1
                             
                             # Check VENUE cuts
-                            if t_name == 'VENUE':
+                            if not skip_venue_check and t_name == 'VENUE':
                                 venue_track_found = True
                                 if check_venue_events(track, valid_venue_events):
                                     venue_event_found = True
@@ -77,10 +82,13 @@ def analyze_midi_batch(root_folder):
                             if actual_count < 1:
                                 errors.append(f"Missing track: '{req_track}'")
 
-                    if not venue_track_found:
-                        errors.append("Missing track: 'VENUE'")
-                    elif not venue_event_found:
-                        errors.append("VENUE track exists but does not contain any camera cuts for the keyboard.")
+                    if skip_venue_check:
+                        print(f"Skipping VENUE check for {filename} (found .milo VENUE)")
+                    else:
+                        if not venue_track_found:
+                            errors.append("Missing track: 'VENUE'")
+                        elif not venue_event_found:
+                            errors.append("VENUE track exists but does not contain any camera cuts for the keyboard.")
 
                     # Report errores
                     if errors:
