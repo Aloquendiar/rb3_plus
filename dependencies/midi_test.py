@@ -1,6 +1,7 @@
 import os
 import mido
 import sys
+import re
 
 def get_track_name(track):
     for msg in track:
@@ -15,6 +16,31 @@ def check_venue_events(track, valid_events):
             if msg.text in valid_events:
                 return True
     return False
+
+def check_trainer_events(track):
+    has_begin = False
+    has_end = False
+
+    begin_pattern = re.compile(r'\[begin_key song_trainer_key_\d+\]')
+    end_pattern = re.compile(r'\[end_key song_trainer_key_\d+\]')
+
+    for msg in track:
+        if msg.type == 'text':
+            if begin_pattern.match(msg.text):
+                has_begin = True
+            elif end_pattern.match(msg.text):
+                has_end = True
+            
+            if has_begin and has_end:
+                break
+
+    errors = []
+    if not has_begin:
+        errors.append("No [begin_key song_trainer_key] found in PART REAL_KEYS_X")
+    if not has_end:
+        errors.append(" No [end_key song_trainer_key] found in PART REAL_KEYS_X")
+
+    return errors
 
 def analyze_midi_batch(root_folder):
 
@@ -34,32 +60,26 @@ def analyze_midi_batch(root_folder):
         '[directed_keys_cam]', '[directed_keys_np]', '[directed_duo_kb]',
         '[directed_duo_kg]', '[directed_duo_kv]'
     }
-    
-    print("--- Integrity of the keys upgrades ---")
+    print("Integrity of the keys upgrades")
 
     files_checked = 0
     issues_found = 0
 
     for root, dirs, files in os.walk(root_folder):
         for filename in files:
-            # MIDI files always end with _plus.mid
-            if filename.lower().endswith('_plus.mid'):
+            if filename.lower().endswith(('.mid')):
                 files_checked += 1
                 full_path = os.path.join(root, filename)
-                
-                # Logic: "song_plus.mid" -> "song"
                 base_name = os.path.splitext(filename)[0]
-                clean_name = base_name[:-5] # remove '_plus'
-                
-                # .milo files do NOT contain _plus
-                milo_name = clean_name + ".milo_xbox"
-                milo_path = os.path.join(root, milo_name)
-
+                # milo_path = os.path.join(root, base_name + ".milo_xbox")
+                if base_name.lower().endswith("_plus"):
+                    clean_name = base_name[:-5] # remove _plus
+                    milo_name = (clean_name + ".milo_xbox")
                 skip_venue_check = False
-                # If .milo exists, we SKIP the venue check in the MIDI
-                if os.path.exists(milo_path):
-                    skip_venue_check = True
-                
+
+                # If .milo exists, we SKIP the venue check
+                if os.path.exists(os.path.join(root, milo_name)):
+                    skip_venue_check
                 errors = []
 
                 try:
@@ -81,8 +101,13 @@ def analyze_midi_batch(root_folder):
                                 venue_track_found = True
                                 if check_venue_events(track, valid_venue_events):
                                     venue_event_found = True
+                            
+                            # Check Trainers in PART REAL_KEYS_X
+                            if t_name == 'PART REAL_KEYS_X':
+                                trainer_errors = check_trainer_events(track)
+                                if trainer_errors:
+                                    errors.extend(trainer_errors)
 
-                    # Validate required tracks
                     for req_track, req_count in required_tracks_config.items():
                         actual_count = track_counts.get(req_track, 0)
                         
@@ -94,43 +119,35 @@ def analyze_midi_batch(root_folder):
                             if actual_count < 1:
                                 errors.append(f"Missing track: '{req_track}'")
 
-                    # Venue check reporting
                     if skip_venue_check:
-                        # Optional: print(f"Skipping VENUE check for {filename} (found {milo_name})")
-                        pass
+                        print(f"Skipping VENUE check for {filename} (found .milo VENUE)")
                     else:
                         if not venue_track_found:
-                            errors.append("Missing track: 'VENUE' (and no .milo_xbox found)")
+                            errors.append("Missing track: 'VENUE'")
                         elif not venue_event_found:
                             errors.append("VENUE track exists but does not contain any camera cuts for the keyboard.")
 
-                    # Report errors per file
+                    # Report errores
                     if errors:
                         issues_found += 1
-                        print(f"\n[ERROR] Issue(s) found in: {filename}")
+                        print(f"Error in {filename}")
                         for err in errors:
                             print(f" - {err}")
+                    else:
+                        pass
 
                 except Exception as e:
-                    print(f"\n[CRITICAL] Error: Could not parse {filename}: {e}")
+                    print(f"Could not parse {filename}: {e}")
                     issues_found += 1
 
-    # Final Summary for Git/CI
-    print("\n" + "="*40)
+    # Final Summary
     print(f"Files Checked: {files_checked}")
     print(f"Files with Issues: {issues_found}")
-    print("="*40)
-
     if issues_found > 0:
         sys.exit(1)
     else:
-        print("Validation successful. No issues found.")
         sys.exit(0)
 
 if __name__ == "__main__":
-    target_folder = "Pro Keys (No New Audio)"
-    if os.path.exists(target_folder):
-        analyze_midi_batch(target_folder)
-    else:
-        print(f"Error: The folder '{target_folder}' does not exist.")
-        sys.exit(1)
+    if os.path.exists("Pro Keys (No New Audio)"):
+        analyze_midi_batch("Pro Keys (No New Audio)")
