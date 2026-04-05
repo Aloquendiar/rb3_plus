@@ -72,14 +72,16 @@ def analyze_midi_batch(root_folder):
                 full_path = os.path.join(root, filename)
                 base_name = os.path.splitext(filename)[0]
                 # milo_path = os.path.join(root, base_name + ".milo_xbox")
+                milo_name = ""
                 if base_name.lower().endswith("_plus"):
                     clean_name = base_name[:-5] # remove _plus
                     milo_name = (clean_name + ".milo_xbox")
+
                 skip_venue_check = False
 
                 # If .milo exists, we SKIP the venue check
-                if os.path.exists(os.path.join(root, milo_name)):
-                    skip_venue_check
+                if milo_name and os.path.exists(os.path.join(root, milo_name)):
+                    skip_venue_check = True
                 errors = []
 
                 try:
@@ -120,7 +122,7 @@ def analyze_midi_batch(root_folder):
                                 errors.append(f"Missing track: '{req_track}'")
 
                     if skip_venue_check:
-                        print(f"Skipping VENUE check for {filename} (found .milo VENUE)")
+                        print(f"Skipping VENUE check for {filename} (found .milo venue)")
                     else:
                         if not venue_track_found:
                             errors.append("Missing track: 'VENUE'")
